@@ -21,7 +21,10 @@ export function Course({ backgroundColor, borderColor, name, newCollaborator }) 
         collaborators.length > 0 && (
             <section
                 className="course-component"
-                style={{backgroundColor : backgroundColor}}
+                style={{
+                    backgroundColor : backgroundColor,
+                    backgroundImage: "url('images/fundo.png')"
+                }}
             >
                 <h3 style={{borderColor: borderColor}}>
                     { name }
