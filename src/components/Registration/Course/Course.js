@@ -7,15 +7,19 @@ export function Course({ backgroundColor, borderColor, name, newCollaborator }) 
 
     useEffect(() => {
         if (name !== newCollaborator.course) return;
-        for (let collab of collaborators) {
-            if (collab.name === newCollaborator.name) {
-                console.log("Collaborator already exists with this name!");
-                return;
-            }
-        }
 
-        setCollaborators(prevCollabs => [...prevCollabs, newCollaborator]);
-    }, [collaborators, name, newCollaborator]);
+        setCollaborators(prevCollabs => {
+            for (let collab of prevCollabs) {
+                if (collab.name === newCollaborator.name) {
+                    console.log("Collaborator already exists with this name!");
+                    return prevCollabs;
+                }
+            }
+            return [...prevCollabs, newCollaborator];
+        });
+    }, [name, newCollaborator]);
+
+
 
     return (
         collaborators.length > 0 && (
@@ -31,13 +35,15 @@ export function Course({ backgroundColor, borderColor, name, newCollaborator }) 
                 </h3>
                 <div className="cards">
                     {
-                        collaborators.map((collaborator) =>
+                        collaborators.map((collaborator, index) =>
                             <Card
                                 backgroundColor={borderColor}
                                 imageUrl={collaborator.imageUrl}
+                                indexCollab={index}
                                 key={collaborator.name}
                                 name={collaborator.name}
                                 role={collaborator.role}
+                                setCollaborators={setCollaborators}
                             />
                         )
                     }
