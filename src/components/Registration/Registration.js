@@ -12,8 +12,7 @@ export function Registration() {
             {
                 getCoursesElements().map((course) =>
                     <Course
-                        backgroundColor={course.backgroundColor}
-                        borderColor={course.borderColor}
+                        color={course.color}
                         newCollaborator={collaborator}
                         key={course.name}
                         name={course.name}
@@ -26,21 +25,20 @@ export function Registration() {
 }
 
 class CourseElement {
-    constructor(backgroundColor, borderColor, name) {
-        this.backgroundColor = backgroundColor;
-        this.borderColor = borderColor;
+    constructor(color, name) {
+        this.color = color;
         this.name = name;
     }
 }
 
 function getCoursesElements() {
     return [
-        new CourseElement("#F0F8E2", "#A6D157", "Data Science"),
-        new CourseElement("#FDE7E8", "#E06B69", "Devops"),
-        new CourseElement("#E8F8FF", "#82CFFA", "Front-end"),
-        new CourseElement("#FFEEDF", "#FF8A29", "Inovação e Gestão"),
-        new CourseElement("#FFF5D9", "#FFBA05", "Mobile"),
-        new CourseElement("#D9F7E9", "#57C278", "Programação"),
-        new CourseElement("#FAE9F5", "#DB6EBF", "UX e Design")
+        new CourseElement("#A6D157", "Data Science"),
+        new CourseElement("#E06B69", "Devops"),
+        new CourseElement("#82CFFA", "Front-end"),
+        new CourseElement("#FF8A29", "Inovação e Gestão"),
+        new CourseElement("#FFBA05", "Mobile"),
+        new CourseElement("#57C278", "Programação"),
+        new CourseElement("#DB6EBF", "UX e Design")
     ];
 }

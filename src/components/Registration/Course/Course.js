@@ -1,9 +1,11 @@
 import "./Course.scss";
 import Card from "../../Card";
 import { useEffect, useState } from "react";
+import hexToRgba from "hex-to-rgba";
 
-export function Course({ backgroundColor, borderColor, name, newCollaborator }) {
+export function Course({ color, name, newCollaborator }) {
     const [collaborators, setCollaborators] = useState([]);
+    const [colorState, setColorState] = useState(color);
 
     useEffect(() => {
         if (name !== newCollaborator.course) return;
@@ -26,18 +28,24 @@ export function Course({ backgroundColor, borderColor, name, newCollaborator }) 
             <section
                 className="course-component"
                 style={{
-                    backgroundColor : backgroundColor,
+                    backgroundColor : hexToRgba(colorState, '0.6'),
                     backgroundImage: "url('images/fundo.png')"
                 }}
             >
-                <h3 style={{borderColor: borderColor}}>
+                <input
+                    className="input-color"
+                    onChange={event => setColorState(event.target.value)}
+                    value={colorState}
+                    type="color"
+                />
+                <h3 style={{borderColor: colorState}}>
                     { name }
                 </h3>
                 <div className="cards">
                     {
                         collaborators.map((collaborator, index) =>
                             <Card
-                                backgroundColor={borderColor}
+                                backgroundColor={colorState}
                                 imageUrl={collaborator.imageUrl}
                                 indexCollab={index}
                                 key={collaborator.name}
