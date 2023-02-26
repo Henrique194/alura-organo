@@ -1,25 +1,30 @@
 import Form from "../Form";
-import {useState} from "react";
+import { useState } from "react";
 import Collaborator from "../../common/Collaborator";
 import Course from "./Course";
+import "./Registration.scss";
 
 export function Registration() {
     const [collaborator, setCollaborator] = useState(new Collaborator());
+    const [numCollaborators, setNumCollaborators] = useState(0);
 
     return (
-        <span>
+        <span className="registration-component">
             <Form addNewCollaborator={setCollaborator} />
-            {
-                getCoursesElements().map((course) =>
-                    <Course
-                        color={course.color}
-                        newCollaborator={collaborator}
-                        key={course.name}
-                        name={course.name}
-                    />
-                )
-            }
-        )
+            <section className="organization">
+                { numCollaborators > 0 && <h1>Minha organização</h1> }
+                {
+                    getCoursesElements().map((course) =>
+                        <Course
+                            color={course.color}
+                            newCollaborator={collaborator}
+                            key={course.name}
+                            name={course.name}
+                            setNumCollaborators={setNumCollaborators}
+                        />
+                    )
+                }
+            </section>
         </span>
     );
 }

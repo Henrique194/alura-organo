@@ -3,7 +3,7 @@ import Card from "../../Card";
 import { useEffect, useState } from "react";
 import hexToRgba from "hex-to-rgba";
 
-export function Course({ color, name, newCollaborator }) {
+export function Course({ color, name, newCollaborator, setNumCollaborators }) {
     const [collaborators, setCollaborators] = useState([]);
     const [colorState, setColorState] = useState(color);
 
@@ -17,11 +17,10 @@ export function Course({ color, name, newCollaborator }) {
                     return prevCollabs;
                 }
             }
+            setNumCollaborators(prev => prev+1);
             return [...prevCollabs, newCollaborator];
         });
-    }, [name, newCollaborator]);
-
-
+    }, [name, newCollaborator, setNumCollaborators]);
 
     return (
         collaborators.length > 0 && (
@@ -52,6 +51,8 @@ export function Course({ color, name, newCollaborator }) {
                                 name={collaborator.name}
                                 role={collaborator.role}
                                 setCollaborators={setCollaborators}
+                                setNumCollaborators={setNumCollaborators}
+                                collaborators={collaborators}
                             />
                         )
                     }
