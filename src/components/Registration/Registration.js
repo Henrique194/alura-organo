@@ -1,49 +1,75 @@
 import Form from "../Form";
 import { useState } from "react";
-import Collaborator from "../../common/Collaborator";
-import Course from "./Course";
+import Course from "../Course";
 import "./Registration.scss";
 
 export function Registration() {
-    const [collaborator, setCollaborator] = useState(new Collaborator());
-    const [numCollaborators, setNumCollaborators] = useState(0);
+    const [courses, setCourses] = useState(getCoursesElements());
+    const numCollaborators = courses.reduce((acc, course) => acc + course.collaborators.length, 0);
+
+    function handleNewCollaborator(newCollaborator) {
+        const nextCourses = courses.map(course => { return {...course} });
+        const selectedCourse = nextCourses.find(course => course.name === newCollaborator.course);
+
+        addNewCollaborator(selectedCourse, newCollaborator);
+
+        if (addNewCollaborator(selectedCourse, newCollaborator)) return;
+
+        setCourses(nextCourses);
+    }
+
+    function handleRemoveCollaborator(course, indexCollaborator) {
+        return () => {
+            const nextCourse = {...course};
+            removeCollaborator(nextCourse, indexCollaborator);
+
+            setCourses(courses.map(el => el.name !== nextCourse.name ? el : nextCourse));
+        };
+    }
 
     return (
         <span className="registration-component">
-            <Form addNewCollaborator={setCollaborator} />
+            <Form onNewCollaborator={handleNewCollaborator}/>
             <section className="organization">
                 { numCollaborators > 0 && <h1>Minha organização</h1> }
-                {
-                    getCoursesElements().map((course) =>
-                        <Course
-                            color={course.color}
-                            newCollaborator={collaborator}
-                            key={course.name}
-                            name={course.name}
-                            setNumCollaborators={setNumCollaborators}
-                        />
-                    )
+                { courses.map(course =>
+                    <Course
+                        key={course.name}
+                        course={course}
+                        onRemoveCollaborator={handleRemoveCollaborator}
+                    /> )
                 }
             </section>
         </span>
     );
 }
 
-class CourseElement {
-    constructor(color, name) {
-        this.color = color;
-        this.name = name;
+function addNewCollaborator(course, newCollaborator) {
+    if (course.collaborators.find(collab => collab.name === newCollaborator.name)) {
+        return false;
     }
+    course.collaborators.push(newCollaborator);
+    return true;
+}
+
+function removeCollaborator(course, indexCollaborator) {
+    if (course.collaborators.length === 0) return false;
+
+    const beforeIndex = course.collaborators.slice(0, indexCollaborator);
+    const afterIndex = course.collaborators.slice(indexCollaborator + 1);
+    course.collaborators = [...beforeIndex, ...afterIndex];
+
+    return true;
 }
 
 function getCoursesElements() {
     return [
-        new CourseElement("#A6D157", "Data Science"),
-        new CourseElement("#E06B69", "Devops"),
-        new CourseElement("#82CFFA", "Front-end"),
-        new CourseElement("#FF8A29", "Inovação e Gestão"),
-        new CourseElement("#FFBA05", "Mobile"),
-        new CourseElement("#57C278", "Programação"),
-        new CourseElement("#DB6EBF", "UX e Design")
+        { collaborators: [], color: "#A6D157", name: "Data Science" },
+        { collaborators: [], color: "#E06B69", name: "Devops" },
+        { collaborators: [], color: "#82CFFA", name: "Front-end" },
+        { collaborators: [], color: "#FF8A29", name: "Inovação e Gestão" },
+        { collaborators: [], color: "#FFBA05", name: "Mobile" },
+        { collaborators: [], color: "#57C278", name: "Programação" },
+        { collaborators: [], color: "#DB6EBF", name: "UX e Design" },
     ];
 }

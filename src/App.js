@@ -1,6 +1,6 @@
 import Banner from "./components/Banner";
-import Registration from "./components/Registration";
 import Footer from "./components/Footer";
+import Registration from "./components/Registration";
 
 function App() {
     return (

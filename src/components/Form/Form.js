@@ -1,44 +1,58 @@
 import "./Form.scss";
-import InputForm from "../InputForm";
-import DropDown from "../DropDown";
 import Button from "../Button";
+import DropDown from "../DropDown";
+import InputForm from "../InputForm";
 import { useState } from "react";
-import Collaborator from "../../common/Collaborator";
 
-export function Form({ addNewCollaborator }) {
-    const states = {
-        "cargo" : useState(""),
-        "dropdown" : useState(""),
-        "imagem" : useState(""),
-        "nome" : useState("")
-    };
+export function Form({ onNewCollaborator }) {
+    const [name, setName] = useState('');
+    const [role, setRole] = useState('');
+    const [imgUrl, setImgUrl] = useState('');
+    const [dropdown, setDropdown] = useState('');
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        onNewCollaborator({
+            course: dropdown,
+            imageUrl: imgUrl,
+            name: name,
+            role: role
+        });
+
+        // Clear Form
+        setDropdown('');
+        setImgUrl('');
+        setName('');
+        setRole('');
+    }
 
     return (
         <section className="form-component">
-            <form onSubmit={onSubmit(states, addNewCollaborator)}>
+            <form onSubmit={handleSubmit}>
                 <h2>Preencha os dados para criar o card do colaborador.</h2>
                 <InputForm
                     label="Nome"
                     placeholder="Digite seu nome"
-                    required={true}
-                    useState={states["nome"]}
+                    required
+                    useState={[name, setName]}
                 />
                 <InputForm
                     label="Cargo"
                     placeholder="Digite seu cargo"
-                    required={true}
-                    useState={states["cargo"]}
+                    required
+                    useState={[role, setRole]}
                 />
                 <InputForm
                     label="Imagem"
                     placeholder="Informe o endereço da imagem"
-                    useState={states["imagem"]}
+                    useState={[imgUrl, setImgUrl]}
                 />
                 <DropDown
                     items={getItems()}
                     label="Time"
-                    required={true}
-                    useState={states["dropdown"]}
+                    required
+                    useState={[dropdown, setDropdown]}
                 />
                 <Button>Criar card</Button>
             </form>
@@ -53,24 +67,4 @@ function getItems() {
         "UX e Design", "Mobile",
         "Inovação e Gestão"
     ];
-}
-
-function onSubmit(states, addNewCollaborator) {
-    return (event) => {
-        event.preventDefault();
-
-        const newCollaborator = new Collaborator(
-            states["dropdown"][0],
-            states["imagem"][0],
-            states["nome"][0],
-            states["cargo"][0]
-        );
-        addNewCollaborator(newCollaborator);
-
-        clearForm(states);
-    }
-}
-
-function clearForm(states) {
-    Object.keys(states).forEach(field => states[field][1](''));
 }

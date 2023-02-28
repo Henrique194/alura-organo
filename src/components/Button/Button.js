@@ -1,9 +1,9 @@
 import "./Button.scss";
 
-export function Button(props) {
+export function Button({ children }) {
     return (
         <button className="button-component">
-            {props.children}
+            {children}
         </button>
     );
 }

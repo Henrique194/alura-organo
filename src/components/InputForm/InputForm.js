@@ -1,24 +1,17 @@
 import "./InputForm.scss";
 
-export function InputForm(props) {
+export function InputForm({ label, placeholder, required = false, useState }) {
     return (
         <div className="inputform-component">
             <label>
-                {props.label}
+                {label}
             </label>
             <input
-                onChange={onChange(props)}
-                placeholder={props.placeholder}
-                required={props.required}
-                value={props.useState[0]}
+                onChange={e => useState[1](e.target.value)}
+                placeholder={placeholder}
+                required={required}
+                value={useState[0]}
             />
         </div>
     );
-}
-
-function onChange(props) {
-    return (event) => {
-        const setState = props.useState[1];
-        setState(event.target.value);
-    }
 }
