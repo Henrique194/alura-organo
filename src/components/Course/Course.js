@@ -25,7 +25,7 @@ export function Course({ course, onRemoveCollaborator }) {
     );
 
     return (
-        <section className="course-component" style={ styleSection }>
+        <section className="course-component" style={styleSection}>
             <input
                 className="input-color"
                 onChange={event => setColorState(event.target.value)}

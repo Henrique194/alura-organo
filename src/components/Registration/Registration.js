@@ -37,7 +37,8 @@ export function Registration() {
                         key={course.name}
                         course={course}
                         onRemoveCollaborator={handleRemoveCollaborator}
-                    /> )
+                    />
+                  )
                 }
             </section>
         </span>
@@ -45,9 +46,9 @@ export function Registration() {
 }
 
 function addNewCollaborator(course, newCollaborator) {
-    if (course.collaborators.find(collab => collab.name === newCollaborator.name)) {
+    if (course.collaborators.find(collab => collab.name === newCollaborator.name))
         return false;
-    }
+
     course.collaborators.push(newCollaborator);
     return true;
 }
